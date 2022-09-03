@@ -15,18 +15,23 @@ function Book(title, author, pages, read) {
 function addBookToLibrary(title, author, pages, read) {
     const book = new Book(title, author, pages, read);
     myLibrary.push(book);
+    return book;
 }
 
 // push book into array
-addBookToLibrary("The Hobbit", "J.R.R. Tolkien", 295, false);
-addBookToLibrary("Bob The Builder", "Technol Banes", 42, true);
-addBookToLibrary("Bob3", "Technreerol Banes", 42, true);
-addBookToLibrary("Boe Builder", "Tecl Banes", 42, true);
+addBookToLibrary("The Hobbit", "J.R.R. Tolkien", 295, true);
+addBookToLibrary("The Hobbites", "J.R.R.RR Tolkien", 295, false);
 
 // on add book button 
 document.getElementById("add").addEventListener("click", function() {
     let overlay = document.createElement("section");
     let addPage = document.createElement("div");
+
+    // form close
+    let formClose = document.createElement("div");
+    formClose.className = "gg-close";
+
+    addPage.appendChild(formClose);
 
     // form
     let formSec = document.createElement("section");
@@ -34,6 +39,19 @@ document.getElementById("add").addEventListener("click", function() {
 
     addPage.appendChild(formSec);
     formSec.appendChild(form);
+    form.setAttribute("id", "form");
+    form.setAttribute("onsubmit", "return false");
+    formSec.className = "formAdd";
+
+    // form inputs
+    let titleDiv = document.createElement("div");
+    let titleLabel = document.createElement("label");
+    let titleInput = document.createElement("input");
+
+    form.appendChild(titleDiv);
+    titleDiv.appendChild(titleLabel);
+    titleDiv.appendChild(titleInput);
+    titleInput.setAttribute("id", "title");
 
     let authDiv = document.createElement("div");
     let authLabel = document.createElement("label");
@@ -42,14 +60,7 @@ document.getElementById("add").addEventListener("click", function() {
     form.appendChild(authDiv);
     authDiv.appendChild(authLabel);
     authDiv.appendChild(authInput);
-
-    let titleDiv = document.createElement("div");
-    let titleLabel = document.createElement("label");
-    let titleInput = document.createElement("input");
-
-    form.appendChild(titleDiv);
-    titleDiv.appendChild(titleLabel);
-    titleDiv.appendChild(titleInput);
+    authInput.setAttribute("id", "author");
 
     let numDiv = document.createElement("div");
     let numLabel = document.createElement("label");
@@ -58,6 +69,7 @@ document.getElementById("add").addEventListener("click", function() {
     form.appendChild(numDiv);
     numDiv.appendChild(numLabel);
     numDiv.appendChild(numInput);
+    numInput.setAttribute("id", "pages");
 
     let readDiv = document.createElement("div");
     let readLabel = document.createElement("label");
@@ -66,11 +78,12 @@ document.getElementById("add").addEventListener("click", function() {
     form.appendChild(readDiv);
     readDiv.appendChild(readLabel);
     readDiv.appendChild(readInput);
+    readInput.setAttribute("id", "read");
 
     authLabel.textContent = "Author";
     titleLabel.textContent = "Title";
     numLabel.textContent = "Number of Pages";
-    readLabel.textContent = "Read?";
+    readLabel.textContent = "Read? (true/false)";
 
     overlay.className = "overlay";
     document.body.appendChild(overlay);
@@ -78,15 +91,32 @@ document.getElementById("add").addEventListener("click", function() {
     addPage.className = "addPage";
     overlay.appendChild(addPage);
 
-    overlay.style.backgroundColor(rgba(55, 55, 55, 0.92));
+    // form submit
+    let submit = document.createElement("button");
+    form.appendChild(submit); 
+    submit.setAttribute("id", "submitBut");
+    submit.textContent = "Add Book";
+    submit.setAttribute("type", "submit");
 
+    // on form close
+    formClose.addEventListener("click", function() {
+        overlay.remove();
+    });
+
+    document.getElementById("submitBut").addEventListener("click", function() {
+        const title = form.elements["title"];
+        const author = form.elements["author"];
+        const pages = form.elements["pages"];
+        const read = form.elements["read"];
+        const newBook = addBookToLibrary(title.value, author.value, pages.value, read.value);
+        placeBook(newBook);
+    });
     
-
 });
 
 // function to place book on page
 function placeBook(Book) {
-// create divs for books
+    // create divs for books
     let books = document.getElementById("books");
     let book = document.createElement("div");
 
@@ -146,6 +176,10 @@ function placeBook(Book) {
     pages.appendChild(pagesAns);
 
     // read
+    let readAns = Book.read;
+    if (readAns === "true" || readAns === true) {
+        input.checked = true;
+    }
     book.appendChild(label);
     book.appendChild(input);
 }
