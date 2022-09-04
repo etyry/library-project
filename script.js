@@ -104,6 +104,7 @@ document.getElementById("add").addEventListener("click", function() {
     });
 
     document.getElementById("submitBut").addEventListener("click", function() {
+        overlay.remove();
         const title = form.elements["title"];
         const author = form.elements["author"];
         const pages = form.elements["pages"];
@@ -111,17 +112,24 @@ document.getElementById("add").addEventListener("click", function() {
         const newBook = addBookToLibrary(title.value, author.value, pages.value, read.value);
         placeBook(newBook);
     });
-    
 });
 
 // function to place book on page
 function placeBook(Book) {
+
     // create divs for books
     let books = document.getElementById("books");
     let book = document.createElement("div");
 
     book.className = "book";
     books.appendChild(book);
+
+    // form close
+    let bookClose = document.createElement("div");
+    bookClose.className = "gg-close";
+    bookClose.setAttribute("id", "gg-book-close");
+
+    book.appendChild(bookClose);
 
     // create p for title, author, pages, read
     let title = document.createElement("p");
@@ -179,6 +187,9 @@ function placeBook(Book) {
     let readAns = Book.read;
     if (readAns === "true" || readAns === true) {
         input.checked = true;
+    } else {
+        input.checked = false;
+        readAns = false;
     }
     book.appendChild(label);
     book.appendChild(input);
@@ -188,4 +199,3 @@ function placeBook(Book) {
 for (let i in myLibrary) {
     placeBook(myLibrary[i]);
 }
-
