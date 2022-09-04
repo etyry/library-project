@@ -208,7 +208,12 @@ header {
 }
 
 #gg-book-close {
-    margin: 0;
+    margin-bottom: auto;
+}
+
+.text {
+    margin-bottom: auto;
+    padding-bottom: 2rem;
 }
 
 .gg-close::after,

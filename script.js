@@ -124,12 +124,15 @@ function placeBook(Book) {
     book.className = "book";
     books.appendChild(book);
 
+    // book index in array
+    book.setAttribute("data-index", myLibrary.indexOf(Book));
+
     // form close
     let bookClose = document.createElement("div");
     bookClose.className = "gg-close";
     bookClose.setAttribute("id", "gg-book-close");
 
-    book.appendChild(bookClose);
+    book.appendChild(bookClose);    
 
     // create p for title, author, pages, read
     let title = document.createElement("p");
@@ -137,20 +140,26 @@ function placeBook(Book) {
     let pages = document.createElement("p");
 
     // create button for read
+    let readButDiv = document.createElement("div"); 
     let label = document.createElement("label");
     let input = document.createElement("input");
-
     let labelBold = document.createElement("strong");
 
+    readButDiv.appendChild(label);
     label.appendChild(labelBold);
     labelBold.textContent = "Read?: ";
     input.type = "checkbox";
+
+    // text div
+    let textDiv = document.createElement("div");
+    textDiv.className = "text";
+    book.appendChild(textDiv);
 
     // populate book content
     // title
     let titleStrong = document.createElement("strong");
 
-    book.appendChild(title);
+    textDiv.appendChild(title);
     title.appendChild(titleStrong);
 
     let titleText = document.createTextNode("Title: "); 
@@ -162,7 +171,7 @@ function placeBook(Book) {
     // author
     let authorStrong = document.createElement("strong");
 
-    book.appendChild(author);
+    textDiv.appendChild(author);
     author.appendChild(authorStrong);
 
     let authorText = document.createTextNode("Author: "); 
@@ -174,7 +183,7 @@ function placeBook(Book) {
     // page count
     let pagesStrong = document.createElement("strong");
 
-    book.appendChild(pages);
+    textDiv.appendChild(pages);
     pages.appendChild(pagesStrong);
 
     let pagesText = document.createTextNode("Page count: "); 
@@ -191,8 +200,15 @@ function placeBook(Book) {
         input.checked = false;
         readAns = false;
     }
-    book.appendChild(label);
-    book.appendChild(input);
+    textDiv.appendChild(readButDiv);
+    readButDiv.appendChild(input);
+
+    // on close button remove the book from library and page
+    bookClose.addEventListener("click", function() {
+        book.remove();
+        myLibrary.splice(book.getAttribute("data-index"), 1);
+    });
+
 }
 
 // for every book in the array place it down on the page
