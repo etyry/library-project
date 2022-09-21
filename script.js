@@ -1,4 +1,4 @@
-// This is The Odin Project's library project. TEST
+// This is The Odin Project's library project. 
 
 // library array
 const myLibrary = [];
